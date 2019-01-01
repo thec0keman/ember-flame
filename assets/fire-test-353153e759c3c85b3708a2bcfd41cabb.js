@@ -33,23 +33,23 @@ if(void 0!==i){var n=i.call(e,t||"default")
 if("object"!==r(n))return n
 throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string")
 return"symbol"===r(t)?t:String(t)}Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
-for(var w=[],x=[],_=[],E=0;E<254;E++){if(E<76.5){var P=.3*E*10
-w.push(P),x.push(0)}else{w.push(255)
-var j=E/255
-x.push(E*j*1.2)}_.push(0)}w.push(255),x.push(255),_.push(255),console.log(w)
-var O,F,T,A,S,M,z,D,I=(O=null,F=function(e,a){return{F:function(t){function s(){var t,n,a,l;(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,s)
+for(var w=[],x=[],_=[],E=0;E<254;E++){if(E<127.5)w.push(E),x.push(0)
+else{w.push(255)
+var P=E-102
+x.push(1.7*P)}_.push(0)}w.push(255),x.push(255),_.push(255)
+var j,O,F,T,A,S,M,z,D=(j=null,O=function(e,a){return{F:function(t){function s(){var t,n,a,l;(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,s)
 for(var c=arguments.length,f=new Array(c),u=0;u<c;u++)f[u]=arguments[u]
 return a=this,n=!(l=(t=i(s)).call.apply(t,[this].concat(f)))||"object"!==r(l)&&"function"!=typeof l?o(a):l,e(o(o(n))),n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function")
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&n(e,t)}(s,a),s}(),d:[{kind:"field",key:"eternalFlame",value:function(){return!0}},{kind:"field",key:"canvasWidth",value:function(){return 500}},{kind:"field",key:"canvasHeight",value:function(){return 300}},{kind:"method",key:"didInsertElement",value:function(){this._buildPixels(),this.image=this.context.createImageData(this.canvas.width,this.canvas.height),this.startFire(),this._loop()}},{kind:"method",decorators:[t.action],key:"startFire",value:function(){for(var e=this.canvas.height-5;e<this.canvas.height;e++)for(var t=0;t<this.canvas.width;t++)this.pixels[e][t]=255}},{kind:"method",decorators:[t.action],key:"toggleEternalFlame",value:function(){this.startFire(),this.toggleProperty("eternalFlame")}},{kind:"method",key:"_buildPixels",value:function(){this.pixels=[]
 for(var e=0;e<this.canvas.height;e++){for(var t=[],r=0;r<this.canvas.width;r++)t.push(0)
 this.pixels.push(t)}}},{kind:"method",key:"_loop",value:function(){var e=this
-setTimeout(function(){e._renderFire()},1)}},{kind:"method",key:"_renderFire",value:function(){this._growFire(),this._drawFire(),this._loop()}},{kind:"method",key:"_growFire",value:function(){for(var e=0;e<this.canvas.height;e++)for(var t=0;t<this.canvas.width;t++)0!==this.pixels[e][t]&&this._growPixel(e,t)}},{kind:"method",key:"_growPixel",value:function(e,t){var r=this.pixels[e][t],i=5*Math.random(),n=i-2.5-1,o=Math.round(t+1.3*n),a=Math.round(e-1.3*i),s=8-r/51+1.1*(2-r/255)
+setTimeout(function(){e._renderFire()},1)}},{kind:"method",key:"_renderFire",value:function(){this._growFire(),this._drawFire(),this._loop()}},{kind:"method",key:"_growFire",value:function(){for(var e=0;e<this.canvas.height;e++)for(var t=0;t<this.canvas.width;t++)0!==this.pixels[e][t]&&this._growPixel(e,t)}},{kind:"method",key:"_growPixel",value:function(e,t){var r=this.pixels[e][t],i=5*Math.random(),n=i-2.5-1,o=Math.round(t+1.2*n),a=Math.round(e-1.5*i),s=8-r/51
 a<0&&(a=0),a>=this.canvas.height&&(a=this.canvas.height-1),o<0&&(o=0),o>=this.canvas.width&&(o=this.canvas.width-1)
 var l=this.pixels[e][t]-Math.round(.25*s)
 if(this.pixels[a][o]=l>0?l:0,!this.eternalFlame||this.eternalFlame&&e!==this.canvas.height-1){var c=Math.round(r-s)
 this.pixels[e][t]=c>0?c:0}}},{kind:"method",key:"_drawFire",value:function(){for(var e=0;e<this.canvas.height;e++)for(var t=0;t<this.canvas.width;t++)this._setImagePixel(e,t,this.pixels[e][t])
 this.context.putImageData(this.image,0,0)}},{kind:"method",key:"_setImagePixel",value:function(e,t,r){var i=e*this.canvas.width*4+4*t
-this.image.data[i+0]=w[r],this.image.data[i+1]=x[r],this.image.data[i+2]=_[r],this.image.data[i+3]=255}},{kind:"get",key:"canvas",value:function(){return this._canvas||(this._canvas=this.element.querySelector("canvas")),this._canvas}},{kind:"get",key:"context",value:function(){return this._context||(this._context=this.canvas.getContext("2d")),this.canvas.getContext("2d")}}]}},T=Ember.Component,z=F(function(e){(function(e,t){["method","field"].forEach(function(r){t.forEach(function(t){t.kind===r&&"own"===t.placement&&f(e,t)})})})(e,D.elements)},T),D=function(e,t){var r=[],i=[],n={static:[],prototype:[],own:[]}
+this.image.data[i+0]=w[r],this.image.data[i+1]=x[r],this.image.data[i+2]=_[r],this.image.data[i+3]=255}},{kind:"get",key:"canvas",value:function(){return this._canvas||(this._canvas=this.element.querySelector("canvas")),this._canvas}},{kind:"get",key:"context",value:function(){return this._context||(this._context=this.canvas.getContext("2d")),this.canvas.getContext("2d")}}]}},F=Ember.Component,M=O(function(e){(function(e,t){["method","field"].forEach(function(r){t.forEach(function(t){t.kind===r&&"own"===t.placement&&f(e,t)})})})(e,z.elements)},F),z=function(e,t){var r=[],i=[],n={static:[],prototype:[],own:[]}
 if(e.forEach(function(e){u(e,n)}),e.forEach(function(e){if(!l(e))return r.push(e)
 var t=function(e,t){for(var r=[],i=[],n=e.decorators,o=n.length-1;o>=0;o--){var a=t[e.placement]
 a.splice(a.indexOf(e.key),1)
@@ -65,12 +65,12 @@ for(var a=0;a<e.length-1;a++)for(var s=a+1;s<e.length;s++)if(e[a].key===e[s].key
 return i.push.apply(i,o.finishers),o.finishers=i,o}(function(e){for(var t=[],r=function(e){return"method"===e.kind&&e.key===o.key&&e.placement===o.placement},i=0;i<e.length;i++){var n,o=e[i]
 if("method"===o.kind&&(n=t.find(r)))if(c(o.descriptor)||c(n.descriptor)){if(l(o)||l(n))throw new ReferenceError("Duplicated methods ("+o.key+") can't be decorated.")
 n.descriptor=o.descriptor}else{if(l(o)){if(l(n))throw new ReferenceError("Decorators can't be placed on different accessors with for the same property ("+o.key+").")
-n.decorators=o.decorators}s(o,n)}else t.push(o)}return t}(z.d.map(a)),O),A=z.F,S=D.elements,M=A.prototype,["method","field"].forEach(function(e){S.forEach(function(t){var r=t.placement
-if(t.kind===e&&("static"===r||"prototype"===r)){var i="static"===r?A:M
+n.decorators=o.decorators}s(o,n)}else t.push(o)}return t}(M.d.map(a)),j),T=M.F,A=z.elements,S=T.prototype,["method","field"].forEach(function(e){A.forEach(function(t){var r=t.placement
+if(t.kind===e&&("static"===r||"prototype"===r)){var i="static"===r?T:S
 f(i,t)}})}),function(e,t){for(var r=0;r<t.length;r++){var i=(0,t[r])(e)
 if(void 0!==i){if("function"!=typeof i)throw new TypeError("Finishers must return a constructor.")
-e=i}}return e}(z.F,D.finishers))
-e.default=I}),define("fire-test/initializers/container-debug-adapter",["exports","ember-resolver/resolvers/classic/container-debug-adapter"],function(e,t){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
+e=i}}return e}(M.F,z.finishers))
+e.default=D}),define("fire-test/initializers/container-debug-adapter",["exports","ember-resolver/resolvers/classic/container-debug-adapter"],function(e,t){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var r={name:"container-debug-adapter",initialize:function(){var e=arguments[1]||arguments[0]
 e.register("container-debug-adapter:main",t.default),e.inject("container-debug-adapter:main","namespace","application:main")}}
 e.default=r}),define("fire-test/initializers/export-application-global",["exports","fire-test/config/environment"],function(e,t){function r(){var e=arguments[1]||arguments[0]
