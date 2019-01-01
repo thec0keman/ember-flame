@@ -6,16 +6,17 @@ const CANVAS_HEIGHT = 300;
 
 // Controls precision of flame calculation (cannot be greater than 255)
 const FIRE = 255;
+
+const DECAY_CONSTANT = FIRE / 5;
+
 // Random seed
-const RANDOM_SEED = 10;
+const RANDOM_SEED = 5;
 // How fast flames spread vertically
-const VERTICAL_SPEED = 1.6;
-// How fast flames spread horizontally.  Affects how many gaps are between pixels.  Greater than 1 looks too scattered, lower than .3 looks too linear.
-const HORIZONTAL_SPEED = .7;
-// How fast an individual pixel decays.  This affects the perception of burn speed.
-const DECAY_SPEED = 1.2;
-// How much energy is transferred when a flame grows.  This affects the perception of burn speed.
-const TRANSFER_DECAY = .92;
+const VERTICAL_SPEED = 1.3;
+// How fast flames spread horizontally.  Affects how many gaps are between pixels.
+const HORIZONTAL_SPEED = 1.3;
+// How much energy is transferred when a flame grows.
+const TRANSFER_DECAY = .25;
 
 const halfRandom = RANDOM_SEED / 2;
 
@@ -23,19 +24,23 @@ const redLookup = [];
 const greenLookup = [];
 const blueLookup = [];
 
+const colorMid = .3;
+const redThreshold = FIRE * colorMid;
+
 // Generate lookup values for colors
 for (let i = 0; i < FIRE - 1; i++) {
-  // Bottom half of flame
-  if (i < FIRE / 2) {
-    redLookup.push(i * 2);
+  // Red half of flame
+  if (i < redThreshold) {
+    const progress = i * colorMid * 10.0;
+
+    redLookup.push(progress);
     greenLookup.push(0);
-
-    // Top half of flame
   } else {
-    const offset = i - (FIRE * .4);
-
     redLookup.push(255);
-    greenLookup.push(offset * 1.7);
+
+    const progress = i / FIRE;
+
+    greenLookup.push(i * progress * 1.2);
   }
 
   blueLookup.push(0);
@@ -44,6 +49,8 @@ for (let i = 0; i < FIRE - 1; i++) {
 redLookup.push(255);
 greenLookup.push(255);
 blueLookup.push(255);
+
+console.log(redLookup);
 
 export default class FireComponent extends Component {
   eternalFlame = true
@@ -124,8 +131,9 @@ export default class FireComponent extends Component {
     let targetY = Math.round(y - (random * VERTICAL_SPEED));
 
     const flameProgress = value / FIRE; // 0 - 1
-    const intensity = 2 - flameProgress; // 1 - 0
-    const decay = Math.round(intensity * random * DECAY_SPEED);
+    const intensity = 2.0 - flameProgress; // 1 - 0
+    const randomDecay = intensity * 1.1;
+    const decay = 8 - (value / DECAY_CONSTANT) + randomDecay;
 
     // Check for out of bounds
     if (targetY < 0)
@@ -138,13 +146,14 @@ export default class FireComponent extends Component {
       targetX = this.canvas.width - 1;
 
     // Energy transfer isn't free!
+    // const transferredValue = this.pixels[y][x] - Math.round(decay * TRANSFER_DECAY);
     const transferredValue = this.pixels[y][x] - Math.round(decay * TRANSFER_DECAY);
 
     this.pixels[targetY][targetX] = transferredValue > 0 ? transferredValue : 0;
 
     // Should this pixel decay?  That depends on whether this is the bottom pixel and if eternalFlame is true
     if (!this.eternalFlame || this.eternalFlame && y !== this.canvas.height - 1) {
-      const updatedValue = value - decay;
+      const updatedValue = Math.round(value - decay);
 
       this.pixels[y][x] = updatedValue > 0 ? updatedValue : 0;
     }
