@@ -92,11 +92,15 @@ export default class FireComponent extends Component {
       targetX = this.canvas.width - 1;
 
     // Energy transfer isn't free!
-    this.pixels[targetY][targetX] = this.pixels[y][x] - (decay / 4);
+    const transferredValue = this.pixels[y][x] - (decay / 4);
+
+    this.pixels[targetY][targetX] = transferredValue > 0 ? transferredValue : 0;
 
     // Either we have a temporal flame or we aren't on the bottom y
     if (!this.eternalFlame || this.eternalFlame && y !== this.canvas.height - 1) {
-      this.pixels[y][x] = value - decay;
+      const updatedValue = value - decay;
+
+      this.pixels[y][x] = updatedValue > 0 ? updatedValue : 0;
     }
   }
 
