@@ -6,15 +6,14 @@ const CANVAS_HEIGHT = 300;
 
 // Controls precision of flame calculation (cannot be greater than 255)
 const FIRE = 255;
-
 const DECAY_CONSTANT = FIRE / 5;
 
 // Random seed
 const RANDOM_SEED = 5;
 // How fast flames spread vertically
-const VERTICAL_SPEED = 1.3;
+const VERTICAL_SPEED = 1.5;
 // How fast flames spread horizontally.  Affects how many gaps are between pixels.
-const HORIZONTAL_SPEED = 1.3;
+const HORIZONTAL_SPEED = 1.2;
 // How much energy is transferred when a flame grows.
 const TRANSFER_DECAY = .25;
 
@@ -24,23 +23,21 @@ const redLookup = [];
 const greenLookup = [];
 const blueLookup = [];
 
-const colorMid = .3;
+const colorMid = .5;
 const redThreshold = FIRE * colorMid;
 
 // Generate lookup values for colors
 for (let i = 0; i < FIRE - 1; i++) {
   // Red half of flame
   if (i < redThreshold) {
-    const progress = i * colorMid * 10.0;
-
-    redLookup.push(progress);
+    redLookup.push(i);
     greenLookup.push(0);
   } else {
     redLookup.push(255);
 
-    const progress = i / FIRE;
+    const offset = i - (FIRE * .4);
 
-    greenLookup.push(i * progress * 1.2);
+    greenLookup.push(offset * 1.7);
   }
 
   blueLookup.push(0);
@@ -49,8 +46,6 @@ for (let i = 0; i < FIRE - 1; i++) {
 redLookup.push(255);
 greenLookup.push(255);
 blueLookup.push(255);
-
-console.log(redLookup);
 
 export default class FireComponent extends Component {
   eternalFlame = true
@@ -131,9 +126,8 @@ export default class FireComponent extends Component {
     let targetY = Math.round(y - (random * VERTICAL_SPEED));
 
     const flameProgress = value / FIRE; // 0 - 1
-    const intensity = 2.0 - flameProgress; // 1 - 0
-    const randomDecay = intensity * 1.1;
-    const decay = 8 - (value / DECAY_CONSTANT) + randomDecay;
+    const intensity = 1.0 - flameProgress; // 1 - 0
+    const decay = 8 - (value / DECAY_CONSTANT);
 
     // Check for out of bounds
     if (targetY < 0)
