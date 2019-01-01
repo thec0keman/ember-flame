@@ -4,7 +4,7 @@ module.exports = function(environment) {
   let ENV = {
     modulePrefix: 'fire-test',
     environment,
-    rootURL: '/',
+    rootURL: 'ember-flame/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
