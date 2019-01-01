@@ -74,14 +74,14 @@ export default class FireComponent extends Component {
   // Decay a pixel for this cycle as well as propagate its flame
   _growPixel(y, x) {
     const value = this.pixels[y][x];
-    const ySpread = Math.round(Math.random() * 2);
-    const xSpread = ySpread - 1;
+    const ySpread = Math.round(Math.random() * 5);
+    const xSpread = Math.round(ySpread - 2.6);
     let targetX = x + xSpread;
     let targetY = y - (ySpread + 1);
 
     // Lower values should decay faster
     // This has an interesting relationship with the colors as it helps control the 'glow' from a flame
-    const decay = 5.5 - Math.round(value / 51);
+    const decay = 8 - (value / 51);
 
     // Check for out of bounds
     if (targetY < 0)
@@ -91,12 +91,13 @@ export default class FireComponent extends Component {
     if (targetX > this.canvas.width)
       targetX = this.canvas.width - 1;
 
-    // Either we have a temporal flame or we aren't on the bottom y
-    if (!this.eternalFlame || y !== this.canvas.height - 1)
-      this.pixels[y][x] = value - decay;
+    // Energy transfer isn't free!
+    this.pixels[targetY][targetX] = this.pixels[y][x] - (decay / 4);
 
-    // Propagate the fire
-    this.pixels[targetY][targetX] = this.pixels[y][x] - 1;
+    // Either we have a temporal flame or we aren't on the bottom y
+    if (!this.eternalFlame || this.eternalFlame && y !== this.canvas.height - 1) {
+      this.pixels[y][x] = value - decay;
+    }
   }
 
   // Draw current pixels
@@ -116,15 +117,18 @@ export default class FireComponent extends Component {
     const index = (y * this.canvas.width * 4) + (x * 4);
 
     // Only a shade of red
-    if (value < FIRE * .7) {
+    if (value < FIRE * .5) {
       this.image.data[index] = value;   // red
       this.image.data[index + 1] = 0;       // green
       this.image.data[index + 2] = 0;       // blue
 
     // Mix of orange
     } else if (value < FIRE) {
+      const offset = value - (FIRE * .4);
+
       this.image.data[index] = 255;         // red
-      this.image.data[index + 1] = (value - FIRE * .6) * 1.7; // green
+      this.image.data[index + 1] = offset * 1.7; // green
+      // (value - (FIRE * .4)) * 1.7; // green
       this.image.data[index + 2] = 0;       // blue
 
     // White
